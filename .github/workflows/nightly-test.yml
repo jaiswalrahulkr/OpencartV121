@@ -1,0 +1,20 @@
+name: nightly-run-workflow
+on:
+  push:
+    branches:
+    - main
+    - release/*
+
+  schedule:
+  - cron: "0 2 * * 1-5"
+  workflow_dispatch:
+
+jobs:
+ build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Start selenoid
+      uses: Xotabu4/selenoid-github-action@v2
+    - uses: actions/checkout@v1
+      with :
+           browsers: chrome
