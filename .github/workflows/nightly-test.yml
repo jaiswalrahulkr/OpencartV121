@@ -8,7 +8,13 @@ on:
   schedule:
   - cron: "0 2 * * 1-5"
   workflow_dispatch:
-
+   inputs:
+     text:
+       description: 'Enter the text you want to run'
+       default: 'Hello'
+       required: true
+       type: string
+       
 jobs:
  build:
     runs-on: ubuntu-latest
