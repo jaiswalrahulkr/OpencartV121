@@ -27,3 +27,6 @@ jobs:
            
     - run: echo ${{github.event.inputs.text}}
     - run: echo 'Hello ${{inputs.text}}'
+
+    - name: Run unit Test
+      run: mvn clean test
