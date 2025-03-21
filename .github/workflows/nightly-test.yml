@@ -24,3 +24,7 @@ jobs:
     - uses: actions/checkout@v1
       with :
            browsers: chrome
+           
+    - name : print value 
+    - run: echo ${{github.event.inputs.text}}
+    - run: echo 'Hello ${{inputs.text}}'
