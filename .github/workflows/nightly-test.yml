@@ -2,7 +2,7 @@ name: nightly-run-workflow
 on:
   push:
     branches:
-    - main
+    - master
     - release/*
 
   schedule:
@@ -29,4 +29,6 @@ jobs:
     - run: echo 'Hello ${{inputs.text}}'
 
     - name: Run unit Test
-      run: mvn clean test
+      run: |
+           xvfb-run --auto-servernum java -jar your-selenium-tests.jar
+           mvn clean test
