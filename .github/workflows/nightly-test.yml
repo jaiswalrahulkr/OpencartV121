@@ -1,34 +1,45 @@
 name: nightly-run-workflow
+
 on:
   push:
     branches:
-    - master
-    - release/*
+      - master
+      - release/*
 
   schedule:
-  - cron: "0 2 * * 1-5"
+    - cron: "0 2 * * 1-5"  # Runs at 2 AM UTC, Monday to Friday
+
   workflow_dispatch:
-   inputs:
-     text:
-       description: 'Enter the text you want to run'
-       default: 'Hello'
-       required: true
-       type: string
-       
+    inputs:
+      text:
+        description: "Enter the text you want to run"
+        default: "Hello"
+        required: true
+        type: string
+
 jobs:
- build:
+  run-web-test:
     runs-on: ubuntu-latest
     steps:
-    - name: Start selenoid
-      uses: Xotabu4/selenoid-github-action@v2
-    - uses: actions/checkout@v1
-      with :
-           browsers: chrome
-           
-    - run: echo ${{github.event.inputs.text}}
-    - run: echo 'Hello ${{inputs.text}}'
+      - name: Pull the Project into Runner
+        uses: actions/checkout@v4  # Updated to the latest version
 
-    - name: Run unit Test
-      run: |
-           xvfb-run --auto-servernum java -jar your-selenium-tests.jar
-           mvn clean test
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: "temurin"
+          java-version: "11"
+
+      - name: Start Selenoid
+        uses: Xotabu4/selenoid-github-action@v2
+        with:
+          browsers: chrome
+
+      - name: Print input value
+        run: |
+          echo "Text input value: ${{ github.event.inputs.text }}"
+
+      - name: Run Selenium Tests
+        run: |
+          xvfb-run --auto-servernum java -jar your-selenium-tests.jar
+          mvn clean test
